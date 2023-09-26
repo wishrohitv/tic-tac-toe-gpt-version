@@ -1,0 +1,79 @@
+def draw_board(board):
+    """
+    This function takes a list of strings representing the Tic Tac Toe board
+    and prints it out on the screen.
+    """
+    print(board[0] + " | " + board[1] + " | " + board[2])
+    print("--+---+--")
+    print(board[3] + " | " + board[4] + " | " + board[5])
+    print("--+---+--")
+    print(board[6] + " | " + board[7] + " | " + board[8])
+
+def get_player_move(board, player):
+    """
+    This function prompts the player to enter a number between 1 and 9
+    corresponding to the square they want to place their symbol on.
+    It updates the board with the player's move and returns the updated board.
+    """
+    valid_move = False
+    while not valid_move:
+        move = input(player + ", enter a number between 1 and 9 to place your symbol: ")
+        if move.isdigit() and int(move) >= 1 and int(move) <= 9 and board[int(move) - 1] == " ":
+            board[int(move) - 1] = player
+            valid_move = True
+        else:
+            print("Invalid move. Please enter a number between 1 and 9 for an empty square.")
+    return board
+
+def check_win(board):
+    """
+    This function checks if there is a winner on the board.
+    It returns the symbol of the winner (X or O) or None if there is no winner.
+    """
+    # Check rows
+    for i in range(0, 9, 3):
+        if board[i] == board[i+1] and board[i+1] == board[i+2] and board[i] != " ":
+            return board[i]
+
+    # Check columns
+    for i in range(3):
+        if board[i] == board[i+3] and board[i+3] == board[i+6] and board[i] != " ":
+            return board[i]
+
+    # Check diagonals
+    if board[0] == board[4] and board[4] == board[8] and board[0] != " ":
+        return board[0]
+    if board[2] == board[4] and board[4] == board[6] and board[2] != " ":
+        return board[2]
+
+    # No winner
+    return None
+
+def is_board_full(board):
+    """
+    This function checks if the board is full.
+    It returns True if the board is full and False otherwise.
+    """
+    return " " not in board
+
+def play_game():
+    """
+    This function plays a game of Tic Tac Toe.
+    """
+    board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+    player = "X"
+    draw_board(board)
+
+    while True:
+        board = get_player_move(board, player)
+        draw_board(board)
+        winner = check_win(board)
+        if winner is not None:
+            print(winner + " wins!")
+            break
+        elif is_board_full(board):
+            print("the game is tie!\nPlease play again!")
+            break
+        player = "O" if player == "X" else "X"
+
+play_game()  
